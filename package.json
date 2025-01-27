@@ -1,0 +1,21 @@
+{
+  "name": "blockchain-flask",
+  "version": "1.0.0",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "flask run"  
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Blockchain Flask app with Web3 integration",
+  "dependencies": {
+    "flask": "^2.0.0", 
+    "aws-sdk": "^2.1000.0",
+    "web3": "^4.15.0"
+  }
+}

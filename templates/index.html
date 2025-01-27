@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Data Storage</title>
+</head>
+<body style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; text-align: center;">
+    <h1>Blockchain Data Storage System</h1>
+
+    <!-- Form to store text on-chain -->
+    <h2>Store Data On-Chain</h2>
+    <form id="storeTextForm" method="POST" action="/store_text_ope" style="margin-bottom: 20px;">
+        <label for="user_data">Product name:</label>
+        <input type="text" id="user_data" name="user_data" required>
+        <button type="submit">Store On-Chain</button>
+    </form>
+    <div id="onChainResponse" style="margin-bottom: 30px;"></div>
+
+    <!-- Form to search data on-chain -->
+    <h2>Search Data On-Chain</h2>
+    <form id="searchForm" method="POST" action="/search_text" style="margin-bottom: 20px;">
+        <label for="search_key">Product name:</label>
+        <input type="text" id="search_key" name="search_word" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResponse" style="margin-bottom: 40px;"></div>
+
+    <!-- Form to store images off-chain -->
+    <h2>Store Image Off-Chain</h2>
+    <form id="storeImageForm" method="POST" action="/store_image" enctype="multipart/form-data" style="margin-bottom: 20px;">
+        <label for="image_file">Select Image:</label>
+        <input type="file" id="image_file" name="image_file" accept="image/*" required>
+        <button type="submit">Store Image</button>
+    </form>
+    <div id="imageResponse" style="margin-bottom: 40px;"></div>
+
+    <!-- JavaScript for handling AJAX requests -->
+    <script>
+        async function handleSubmit(event, formId, responseDivId) {
+            event.preventDefault();
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+            const responseDiv = document.getElementById(responseDivId);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                });
+                const result = await response.json();
+
+                // Format response messages based on the result
+                if (result.message) {
+                    responseDiv.innerHTML = `<b style="color: green;">${result.message}</b>`;
+                } else if (result.error) {
+                    responseDiv.innerHTML = `<b style="color: red;">${result.error}</b>`;
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<b style="color: red;">Error: ${error.message}</b>`;
+            }
+        }
+
+        document.getElementById("storeTextForm").addEventListener("submit", (e) =>
+            handleSubmit(e, "storeTextForm", "onChainResponse")
+        );
+        document.getElementById("storeImageForm").addEventListener("submit", (e) =>
+            handleSubmit(e, "storeImageForm", "imageResponse")
+        );
+        document.getElementById("searchForm").addEventListener("submit", (e) =>
+            handleSubmit(e, "searchForm", "searchResponse")
+        );
+    </script>
+</body>
+</html>
